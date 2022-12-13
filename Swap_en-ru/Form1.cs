@@ -50,6 +50,11 @@ namespace Swap_en_ru
                                 result += en[j];
                                 break;
                             }
+                            else if (a[i] == ' ')
+                            {
+                                result += ' ';
+                                break;
+                            }
 
                             else if (j == ru.Length - 1 && a[i] != ru[j])
                             {
@@ -75,6 +80,12 @@ namespace Swap_en_ru
                             if (a[i] == en[j])
                             {
                                 result += ru[j];
+                                break;
+                            }
+
+                            else if (a[i] == ' ')
+                            {
+                                result += ' ';
                                 break;
                             }
 
