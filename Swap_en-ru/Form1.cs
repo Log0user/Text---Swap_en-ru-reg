@@ -8,7 +8,7 @@ namespace Swap_en_ru
         }
 
         private void button1_Click(object sender, EventArgs e)
-        {           
+        {
             bool select = true;
 
             if (radioButton5.Checked == true)
@@ -30,17 +30,16 @@ namespace Swap_en_ru
             textBox2.Text = Swap(textBox1.Text.ToString(), select);
         }
 
-        private string Swap(string a, bool s)
+        private string Swap(string a, bool s) // - фукция изменения раскладки
         {
             string ru = "йцукенгшщзхъфывапролджэячсмитьбю.";
             string en = "qwertyuiop[]asdfghjkl;'zxcvbnm,./";
-            //int temp = 0;
-            //bool rg = false;
+
             string result = "";
 
             if (a.Length != 0)
             {
-                if (s)
+                if (s) // - Когда RU->EN
                 {
                     for (int i = 0; i < a.Length; i++)
                     {
@@ -63,12 +62,11 @@ namespace Swap_en_ru
                                         break;
                                     }
                                 }
-                                // break;
                             }
                         }
                     }
                 }
-                else
+                else // - Когда EN-RU
                 {
                     for (int i = 0; i < a.Length; i++)
                     {
@@ -91,7 +89,6 @@ namespace Swap_en_ru
                                         break;
                                     }
                                 }
-                                // break;
                             }
                         }
                     }
@@ -101,23 +98,29 @@ namespace Swap_en_ru
 
             return result;
         }
-        private char Up(char a)
+
+        private char Up(char a) // - Делает букву заглавной
         {
             char result = char.ToUpper(a);
             return result;
         }
 
-        private bool Auto(string a)
+        private char Down(char a) // - Делает букву сторчной
+        {
+            char result = char.ToLower(a);
+            return result;
+        }
+
+        private bool Auto(string a) // - Автоматическое определение раскладки на основании букв языка
         {
             string RUonle = "а, б, в, г, д, е, ё, ж, з, и, й, к, л, м, н, о, п, р, с, т, у, ф, х, ц, ч, ш, щ, ъ, ы, ь, э, ю, я";
             string ENonle = "a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p, q, r, s, t, u, v, w, x, y, z";
             bool result = false;
-            //bool temp = false;
 
             for (int i = 0; i < a.Length; i++)
             {
-                
-                for (int j = 0; j < RUonle.Length; j++) // - 1
+
+                for (int j = 0; j < RUonle.Length; j++) // - Сравнение со строчными символами русского алфавита
                 {
                     if (a[i] == RUonle[j])
                     {
@@ -125,7 +128,7 @@ namespace Swap_en_ru
                     }
                 }
 
-                for (int j = 0; j < RUonle.Length; j++)
+                for (int j = 0; j < RUonle.Length; j++) // - Заглавные буквы
                 {
                     if (a[i] == Up(RUonle[j]))
                     {
@@ -134,7 +137,7 @@ namespace Swap_en_ru
                 }
 
 
-                for (int j = 0; j < ENonle.Length; j++) // - 2
+                for (int j = 0; j < ENonle.Length; j++) // - Сравнение со строчными символами английского алфавита
                 {
                     if (a[i] == ENonle[j])
                     {
@@ -142,7 +145,7 @@ namespace Swap_en_ru
                     }
                 }
 
-                for (int j = 0; j < ENonle.Length; j++)
+                for (int j = 0; j < ENonle.Length; j++) // - Заглавные буквы
                 {
                     if (a[i] == Up(ENonle[j]))
                     {
@@ -151,8 +154,6 @@ namespace Swap_en_ru
                 }
 
             }
-
-
 
             return result;
         }
@@ -165,7 +166,7 @@ namespace Swap_en_ru
         private void radioButton1_Click(object sender, EventArgs e)
         {
             radioButton4.Checked = true;
-           
+
             radioButton2.Checked = false;
             radioButton3.Checked = false;
 
@@ -176,7 +177,7 @@ namespace Swap_en_ru
         private void radioButton2_Click(object sender, EventArgs e)
         {
             radioButton3.Checked = true;
-            
+
             radioButton1.Checked = false;
             radioButton4.Checked = false;
 
@@ -187,7 +188,7 @@ namespace Swap_en_ru
         private void radioButton3_Click(object sender, EventArgs e)
         {
             radioButton2.Checked = true;
-           
+
             radioButton1.Checked = false;
             radioButton4.Checked = false;
 
@@ -198,7 +199,7 @@ namespace Swap_en_ru
         private void radioButton4_Click(object sender, EventArgs e)
         {
             radioButton1.Checked = true;
-            
+
             radioButton3.Checked = false;
             radioButton2.Checked = false;
 
@@ -215,7 +216,7 @@ namespace Swap_en_ru
         private void radioButton5_Click(object sender, EventArgs e)
         {
             radioButton6.Checked = true;
-           
+
             radioButton1.Checked = false;
             radioButton2.Checked = false;
             radioButton3.Checked = false;
@@ -225,11 +226,45 @@ namespace Swap_en_ru
         private void radioButton6_Click(object sender, EventArgs e)
         {
             radioButton5.Checked = true;
-           
+
             radioButton1.Checked = false;
             radioButton2.Checked = false;
             radioButton3.Checked = false;
             radioButton4.Checked = false;
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            string result = "";
+            for (int i = 0; i < textBox1.Text.Length; i++)
+            {
+                result += Up(textBox1.Text[i]);
+            }
+            textBox2.Text = result;
+            result = "";
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            string result = "";
+            for (int i = 0; i < textBox1.Text.Length; i++)
+            {
+                result += Down(textBox1.Text[i]);
+            }
+            textBox2.Text = result;
+            result = "";
+        }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            textBox2.Text = textBox1.Text;
+            textBox1.Clear();
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            textBox1.Text = textBox2.Text;
+            textBox2.Clear();
         }
     }
 }
