@@ -10,6 +10,7 @@ namespace Swap_en_ru
         private void button1_Click(object sender, EventArgs e)
         {
             bool select = true;
+            bool check = true;
 
             if (radioButton5.Checked == true)
             {
@@ -26,19 +27,33 @@ namespace Swap_en_ru
                 select = false;
             }
 
+            if (checkBox1.Checked == true)
+            {
+                check = true;
+            }
+            else
+            {
+                check = false;
+            }
 
-            textBox2.Text = Swap(textBox1.Text.ToString(), select);
+            textBox2.Text = Swap(textBox1.Text.ToString(), select, check);
         }
 
-        private string Swap(string a, bool s) // - фукция изменения раскладки
+        private string Swap(string a, bool s, bool c) // - фукция изменения раскладки
         {
-            string ru = "йцукенгшщзхъфывапролджэячсмитьбю.";
-            string en = "qwertyuiop[]asdfghjkl;'zxcvbnm,./";
+            string ru = "йцукенгшщзхъфывапролджэячсмитьбю.ё";
+            string en = "qwertyuiop[]asdfghjkl;'zxcvbnm,./`";
+            // string ru = "йцукенгшщзхъфывапролджэячсмитьбю.";          
+            // string en = "qwertyuiop[]asdfghjkl;'zxcvbnm,./";
+
+            //string ru = "йцукенгшщзхъфывапролджэячсмитьбю.!№;%:?*()_+/";
+            //string en = "qwertyuiop[]asdfghjkl;'zxcvbnm,./!#$%^&*()_+|";
 
             string result = "";
 
             if (a.Length != 0)
             {
+                int x = 0;
                 if (s) // - Когда RU->EN
                 {
                     for (int i = 0; i < a.Length; i++)
@@ -56,18 +71,62 @@ namespace Swap_en_ru
                                 break;
                             }
 
-                            else if (j == ru.Length - 1 && a[i] != ru[j])
+                            else if (int.TryParse(Convert.ToString(a[i]), out x))
                             {
-                                for (int q = 0; q < ru.Length; q++)
-                                {
+                                result += x;
+                                break;
+                            }
 
-                                    if (a[i] == Up(ru[q]))
+
+                            //else if (j == ru.Length - 1 && a[i] != ru[j])
+                            //{
+                            //    for (int q = 0; q < ru.Length; q++)
+                            //    {
+
+                            //        if (a[i] == Up(ru[q]))
+                            //        {
+                            //            result += Up(en[q]);
+                            //            break;
+                            //        }
+
+
+
+                            //    }
+                            //}
+
+                            else //------------------Проблема - зменяет и символы, и заглавные буквы. Пока закомменчу
+                            {
+                                if (j == ru.Length - 1 && a[i] != ru[j])
+                                {
+                                    for (int q = 0; q < ru.Length; q++)
                                     {
-                                        result += Up(en[q]);
-                                        break;
+
+                                        if (a[i] == Up(ru[q]))
+                                        {
+                                            result += Up(en[q]);
+                                            break;
+                                        }
+
+
+
                                     }
                                 }
+                                //else // --------------Проблема в том, что нужно передавать не последний символ. Пофикси
+                                //{
+                                //    if (c)
+                                //    {
+                                //        if (Sig(a, true, i) != '0')
+                                //        {
+                                //            result += Sig(a, true, i);
+                                //            break;
+                                //        }
+                                //    }
+                                //}
+
                             }
+
+
+
                         }
                     }
                 }
@@ -89,18 +148,63 @@ namespace Swap_en_ru
                                 break;
                             }
 
-                            else if (j == en.Length - 1 && a[i] != en[j])
+                            else if (int.TryParse(Convert.ToString(a[i]), out x))
                             {
-                                for (int q = 0; q < ru.Length; q++)
-                                {
+                                result += x;
+                                break;
+                            }
 
-                                    if (a[i] == Up(en[q]))
+                            //else if (j == en.Length - 1 && a[i] != en[j])
+                            //{
+                            //    for (int q = 0; q < ru.Length; q++)
+                            //    {
+
+                            //        if (a[i] == Up(en[q]))
+                            //        {
+                            //            result += Up(ru[q]);
+                            //            break;
+                            //        }
+
+                            //    }
+                            //}
+
+                            else
+                            {
+                                //if (char.ToUpper(Convert.ToChar(a[i])) == Up)
+                                //{
+
+                                //}
+                                if (j == en.Length - 1 && a[i] != en[j])
+                                {
+                                    for (int q = 0; q < ru.Length; q++)
                                     {
-                                        result += Up(ru[q]);
-                                        break;
+
+                                        if (a[i] == Up(en[q]))
+                                        {
+                                            result += Up(ru[q]);
+                                            break;
+                                        }
+
                                     }
                                 }
+
+                                //else // --------------Проблема в том, что нужно передавать не последний символ. Пофикси
+                                //{
+
+                                //    if (c)
+                                //    {
+                                //        if (Sig(a, false, i) != '0')
+                                //        {
+                                //            result += Sig(a, false, i);
+                                //            break;
+                                //        }
+
+                                //    }
+                                //}
                             }
+
+
+
                         }
                     }
                 }
@@ -116,6 +220,57 @@ namespace Swap_en_ru
             return result;
         }
 
+        private char Sig(string a, bool t, int s) // - Проверка на спецсимволы (символы из ряда цифр, без 2)
+        {
+            char result = '0';
+            string ru = "!№;%:?*()_+/";
+            string en = "!#$%^&*()_+|";
+
+            if (t)
+            {
+                for (int i = s; i < a.Length; i++)
+                {
+                    for (int j = 0; j < ru.Length; j++) //--------RU
+                    {
+                        if (a[i] == ru[j])
+                        {
+                            result = en[j];
+                            return result;
+                        }
+                        else if (a[i] == '"')
+                        {
+                            result = '@';
+                            return result;
+                        }
+                    }
+                }
+
+            }
+            else
+            {
+                for (int i = s; i < a.Length; i++)
+                {
+                    for (int j = 0; j < en.Length; j++) //--------EN
+                    {
+                        if (a[i] == en[j])
+                        {
+                            result = ru[j];
+                            return result;
+                        }
+                        else if (a[i] == '@')
+                        {
+                            result = '"';
+                            return result;
+                        }
+                    }
+                }
+
+            }
+
+
+            return result;
+        }
+
         private char Down(char a) // - Делает букву сторчной
         {
             char result = char.ToLower(a);
@@ -124,8 +279,11 @@ namespace Swap_en_ru
 
         private bool Auto(string a) // - Автоматическое определение раскладки на основании букв языка
         {
-            string RUonle = "а, б, в, г, д, е, ё, ж, з, и, й, к, л, м, н, о, п, р, с, т, у, ф, х, ц, ч, ш, щ, ъ, ы, ь, э, ю, я";
-            string ENonle = "a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p, q, r, s, t, u, v, w, x, y, z";
+            string RUonle = "абвгдеёжзийклмнопрстуфхцчшщъыьэюя";
+            string ENonle = "abcdefghijklmnopqrstuvwxyz";
+
+            //string RUonle = "а, б, в, г, д, е, ё, ж, з, и, й, к, л, м, н, о, п, р, с, т, у, ф, х, ц, ч, ш, щ, ъ, ы, ь, э, ю, я";
+            //string ENonle = "a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p, q, r, s, t, u, v, w, x, y, z";
             bool result = false;
 
             for (int i = 0; i < a.Length; i++)
