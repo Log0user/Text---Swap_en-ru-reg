@@ -14,7 +14,7 @@ namespace Swap_en_ru
 
             if (radioButton5.Checked == true)
             {
-                select = Auto(textBox1.Text);
+                select = Auto(richTextBox1.Text);
             }
 
             if (radioButton1.Checked == true)
@@ -36,18 +36,18 @@ namespace Swap_en_ru
                 check = false;
             }
 
-            textBox2.Text = Swap(textBox1.Text.ToString(), select, check);
+            richTextBox2.Text = Swap(richTextBox1.Text.ToString(), select, check);
         }
 
         private string Swap(string a, bool s, bool c) // - פףךצטÿ טחלוםוםטÿ נאסךכאהךט
         {
-            string ru = "יצףךוםדרשחץתפûגאןנמכהז‎ÿקסלטעüב‏.¸";
-            string en = "qwertyuiop[]asdfghjkl;'zxcvbnm,./`";
+            //string ru = "יצףךוםדרשחץתפûגאןנמכהז‎ÿקסלטעüב‏.¸";
+            //string en = "qwertyuiop[]asdfghjkl;'zxcvbnm,./`";
             // string ru = "יצףךוםדרשחץתפûגאןנמכהז‎ÿקסלטעüב‏.";          
             // string en = "qwertyuiop[]asdfghjkl;'zxcvbnm,./";
 
-            //string ru = "יצףךוםדרשחץתפûגאןנמכהז‎ÿקסלטעüב‏.!¹;%:?*()_+/";
-            //string en = "qwertyuiop[]asdfghjkl;'zxcvbnm,./!#$%^&*()_+|";
+            string ru = "יצףךוםדרשחץתפûגאןנמכהז‎ÿקסלטעüב‏.!¹;%:?*()_+/@";
+            string en = "qwertyuiop[]asdfghjkl;'zxcvbnm,./!#$%^&*()_+|\"";
 
             string result = "";
 
@@ -405,35 +405,35 @@ namespace Swap_en_ru
         private void button2_Click(object sender, EventArgs e)
         {
             string result = "";
-            for (int i = 0; i < textBox1.Text.Length; i++)
+            for (int i = 0; i < richTextBox1.Text.Length; i++)
             {
-                result += Up(textBox1.Text[i]);
+                result += Up(richTextBox1.Text[i]);
             }
-            textBox2.Text = result;
+            richTextBox2.Text = result;
             result = "";
         }
 
         private void button3_Click(object sender, EventArgs e)
         {
             string result = "";
-            for (int i = 0; i < textBox1.Text.Length; i++)
+            for (int i = 0; i < richTextBox1.Text.Length; i++)
             {
-                result += Down(textBox1.Text[i]);
+                result += Down(richTextBox1.Text[i]);
             }
-            textBox2.Text = result;
+            richTextBox2.Text = result;
             result = "";
         }
 
         private void button5_Click(object sender, EventArgs e)
         {
-            textBox2.Text = textBox1.Text;
-            textBox1.Clear();
+            richTextBox2.Text = richTextBox1.Text;
+            richTextBox1.Clear();
         }
 
         private void button4_Click(object sender, EventArgs e)
         {
-            textBox1.Text = textBox2.Text;
-            textBox2.Clear();
+            richTextBox1.Text = richTextBox2.Text;
+            richTextBox2.Clear();
         }
     }
 }

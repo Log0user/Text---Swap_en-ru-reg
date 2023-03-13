@@ -28,250 +28,252 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.button1 = new System.Windows.Forms.Button();
-            this.label1 = new System.Windows.Forms.Label();
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.textBox2 = new System.Windows.Forms.TextBox();
-            this.label2 = new System.Windows.Forms.Label();
-            this.radioButton1 = new System.Windows.Forms.RadioButton();
-            this.radioButton2 = new System.Windows.Forms.RadioButton();
-            this.radioButton3 = new System.Windows.Forms.RadioButton();
-            this.radioButton4 = new System.Windows.Forms.RadioButton();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.radioButton5 = new System.Windows.Forms.RadioButton();
-            this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.radioButton6 = new System.Windows.Forms.RadioButton();
-            this.button2 = new System.Windows.Forms.Button();
-            this.button3 = new System.Windows.Forms.Button();
-            this.button4 = new System.Windows.Forms.Button();
-            this.button5 = new System.Windows.Forms.Button();
-            this.checkBox1 = new System.Windows.Forms.CheckBox();
-            this.groupBox1.SuspendLayout();
-            this.groupBox2.SuspendLayout();
-            this.SuspendLayout();
+            button1 = new Button();
+            label1 = new Label();
+            label2 = new Label();
+            radioButton1 = new RadioButton();
+            radioButton2 = new RadioButton();
+            radioButton3 = new RadioButton();
+            radioButton4 = new RadioButton();
+            groupBox1 = new GroupBox();
+            richTextBox1 = new RichTextBox();
+            radioButton5 = new RadioButton();
+            button2 = new Button();
+            groupBox2 = new GroupBox();
+            richTextBox2 = new RichTextBox();
+            radioButton6 = new RadioButton();
+            button3 = new Button();
+            button4 = new Button();
+            button5 = new Button();
+            checkBox1 = new CheckBox();
+            groupBox1.SuspendLayout();
+            groupBox2.SuspendLayout();
+            SuspendLayout();
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(124, 113);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(130, 23);
-            this.button1.TabIndex = 0;
-            this.button1.Text = "Сменить раскладку";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            button1.Location = new Point(137, 209);
+            button1.Name = "button1";
+            button1.Size = new Size(130, 23);
+            button1.TabIndex = 0;
+            button1.Text = "Сменить раскладку";
+            button1.UseVisualStyleBackColor = true;
+            button1.Click += button1_Click;
             // 
             // label1
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(6, 34);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(160, 15);
-            this.label1.TabIndex = 1;
-            this.label1.Text = "Текст в исходной раскладке";
-            // 
-            // textBox1
-            // 
-            this.textBox1.Location = new System.Drawing.Point(6, 52);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(160, 23);
-            this.textBox1.TabIndex = 2;
-            // 
-            // textBox2
-            // 
-            this.textBox2.Location = new System.Drawing.Point(6, 52);
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(160, 23);
-            this.textBox2.TabIndex = 3;
+            label1.AutoSize = true;
+            label1.Location = new Point(16, 40);
+            label1.Name = "label1";
+            label1.Size = new Size(160, 15);
+            label1.TabIndex = 1;
+            label1.Text = "Текст в исходной раскладке";
             // 
             // label2
             // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(36, 34);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(110, 15);
-            this.label2.TabIndex = 4;
-            this.label2.Text = "Измененный текст";
+            label2.AutoSize = true;
+            label2.Location = new Point(46, 40);
+            label2.Name = "label2";
+            label2.Size = new Size(110, 15);
+            label2.TabIndex = 4;
+            label2.Text = "Измененный текст";
             // 
             // radioButton1
             // 
-            this.radioButton1.AutoSize = true;
-            this.radioButton1.Checked = true;
-            this.radioButton1.Location = new System.Drawing.Point(67, 12);
-            this.radioButton1.Name = "radioButton1";
-            this.radioButton1.Size = new System.Drawing.Size(40, 19);
-            this.radioButton1.TabIndex = 5;
-            this.radioButton1.TabStop = true;
-            this.radioButton1.Text = "RU";
-            this.radioButton1.UseVisualStyleBackColor = true;
-            this.radioButton1.Click += new System.EventHandler(this.radioButton1_Click);
+            radioButton1.AutoSize = true;
+            radioButton1.Checked = true;
+            radioButton1.Location = new Point(77, 18);
+            radioButton1.Name = "radioButton1";
+            radioButton1.Size = new Size(40, 19);
+            radioButton1.TabIndex = 5;
+            radioButton1.TabStop = true;
+            radioButton1.Text = "RU";
+            radioButton1.UseVisualStyleBackColor = true;
+            radioButton1.Click += radioButton1_Click;
             // 
             // radioButton2
             // 
-            this.radioButton2.AutoSize = true;
-            this.radioButton2.Location = new System.Drawing.Point(113, 12);
-            this.radioButton2.Name = "radioButton2";
-            this.radioButton2.Size = new System.Drawing.Size(40, 19);
-            this.radioButton2.TabIndex = 6;
-            this.radioButton2.Text = "EN";
-            this.radioButton2.UseVisualStyleBackColor = true;
-            this.radioButton2.Click += new System.EventHandler(this.radioButton2_Click);
+            radioButton2.AutoSize = true;
+            radioButton2.Location = new Point(123, 18);
+            radioButton2.Name = "radioButton2";
+            radioButton2.Size = new Size(40, 19);
+            radioButton2.TabIndex = 6;
+            radioButton2.Text = "EN";
+            radioButton2.UseVisualStyleBackColor = true;
+            radioButton2.Click += radioButton2_Click;
             // 
             // radioButton3
             // 
-            this.radioButton3.AutoSize = true;
-            this.radioButton3.Location = new System.Drawing.Point(122, 12);
-            this.radioButton3.Name = "radioButton3";
-            this.radioButton3.Size = new System.Drawing.Size(40, 19);
-            this.radioButton3.TabIndex = 7;
-            this.radioButton3.Text = "RU";
-            this.radioButton3.UseVisualStyleBackColor = true;
-            this.radioButton3.Click += new System.EventHandler(this.radioButton3_Click);
+            radioButton3.AutoSize = true;
+            radioButton3.Location = new Point(132, 18);
+            radioButton3.Name = "radioButton3";
+            radioButton3.Size = new Size(40, 19);
+            radioButton3.TabIndex = 7;
+            radioButton3.Text = "RU";
+            radioButton3.UseVisualStyleBackColor = true;
+            radioButton3.Click += radioButton3_Click;
             // 
             // radioButton4
             // 
-            this.radioButton4.AutoSize = true;
-            this.radioButton4.Checked = true;
-            this.radioButton4.Location = new System.Drawing.Point(76, 12);
-            this.radioButton4.Name = "radioButton4";
-            this.radioButton4.Size = new System.Drawing.Size(40, 19);
-            this.radioButton4.TabIndex = 8;
-            this.radioButton4.TabStop = true;
-            this.radioButton4.Text = "EN";
-            this.radioButton4.UseVisualStyleBackColor = true;
-            this.radioButton4.Click += new System.EventHandler(this.radioButton4_Click);
+            radioButton4.AutoSize = true;
+            radioButton4.Checked = true;
+            radioButton4.Location = new Point(86, 18);
+            radioButton4.Name = "radioButton4";
+            radioButton4.Size = new Size(40, 19);
+            radioButton4.TabIndex = 8;
+            radioButton4.TabStop = true;
+            radioButton4.Text = "EN";
+            radioButton4.UseVisualStyleBackColor = true;
+            radioButton4.Click += radioButton4_Click;
             // 
             // groupBox1
             // 
-            this.groupBox1.Controls.Add(this.radioButton5);
-            this.groupBox1.Controls.Add(this.textBox1);
-            this.groupBox1.Controls.Add(this.radioButton2);
-            this.groupBox1.Controls.Add(this.radioButton1);
-            this.groupBox1.Controls.Add(this.label1);
-            this.groupBox1.Location = new System.Drawing.Point(11, 21);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(177, 86);
-            this.groupBox1.TabIndex = 9;
-            this.groupBox1.TabStop = false;
+            groupBox1.AutoSize = true;
+            groupBox1.Controls.Add(richTextBox1);
+            groupBox1.Controls.Add(radioButton5);
+            groupBox1.Controls.Add(radioButton2);
+            groupBox1.Controls.Add(radioButton1);
+            groupBox1.Controls.Add(label1);
+            groupBox1.Location = new Point(2, 27);
+            groupBox1.Name = "groupBox1";
+            groupBox1.Size = new Size(199, 175);
+            groupBox1.TabIndex = 9;
+            groupBox1.TabStop = false;
+            // 
+            // richTextBox1
+            // 
+            richTextBox1.Location = new Point(39, 57);
+            richTextBox1.Name = "richTextBox1";
+            richTextBox1.Size = new Size(100, 96);
+            richTextBox1.TabIndex = 16;
+            richTextBox1.Text = "";
             // 
             // radioButton5
             // 
-            this.radioButton5.AutoSize = true;
-            this.radioButton5.Location = new System.Drawing.Point(13, 12);
-            this.radioButton5.Name = "radioButton5";
-            this.radioButton5.Size = new System.Drawing.Size(51, 19);
-            this.radioButton5.TabIndex = 9;
-            this.radioButton5.Text = "Auto";
-            this.radioButton5.UseVisualStyleBackColor = true;
-            this.radioButton5.Click += new System.EventHandler(this.radioButton5_Click);
-            // 
-            // groupBox2
-            // 
-            this.groupBox2.Controls.Add(this.radioButton6);
-            this.groupBox2.Controls.Add(this.textBox2);
-            this.groupBox2.Controls.Add(this.label2);
-            this.groupBox2.Controls.Add(this.radioButton4);
-            this.groupBox2.Controls.Add(this.radioButton3);
-            this.groupBox2.Location = new System.Drawing.Point(194, 21);
-            this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(177, 86);
-            this.groupBox2.TabIndex = 10;
-            this.groupBox2.TabStop = false;
-            // 
-            // radioButton6
-            // 
-            this.radioButton6.AutoSize = true;
-            this.radioButton6.Location = new System.Drawing.Point(19, 12);
-            this.radioButton6.Name = "radioButton6";
-            this.radioButton6.Size = new System.Drawing.Size(51, 19);
-            this.radioButton6.TabIndex = 10;
-            this.radioButton6.Text = "Auto";
-            this.radioButton6.UseVisualStyleBackColor = true;
-            this.radioButton6.CheckedChanged += new System.EventHandler(this.radioButton6_CheckedChanged);
-            this.radioButton6.Click += new System.EventHandler(this.radioButton6_Click);
+            radioButton5.AutoSize = true;
+            radioButton5.Location = new Point(23, 18);
+            radioButton5.Name = "radioButton5";
+            radioButton5.Size = new Size(51, 19);
+            radioButton5.TabIndex = 9;
+            radioButton5.Text = "Auto";
+            radioButton5.UseVisualStyleBackColor = true;
+            radioButton5.Click += radioButton5_Click;
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(141, 4);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(47, 23);
-            this.button2.TabIndex = 11;
-            this.button2.Text = "a->A";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
+            button2.Location = new Point(154, 12);
+            button2.Name = "button2";
+            button2.Size = new Size(47, 23);
+            button2.TabIndex = 11;
+            button2.Text = "a->A";
+            button2.UseVisualStyleBackColor = true;
+            button2.Click += button2_Click;
+            // 
+            // groupBox2
+            // 
+            groupBox2.AutoSize = true;
+            groupBox2.Controls.Add(richTextBox2);
+            groupBox2.Controls.Add(radioButton6);
+            groupBox2.Controls.Add(label2);
+            groupBox2.Controls.Add(radioButton4);
+            groupBox2.Controls.Add(radioButton3);
+            groupBox2.Location = new Point(207, 27);
+            groupBox2.Name = "groupBox2";
+            groupBox2.Size = new Size(199, 176);
+            groupBox2.TabIndex = 10;
+            groupBox2.TabStop = false;
+            // 
+            // richTextBox2
+            // 
+            richTextBox2.Location = new Point(56, 58);
+            richTextBox2.Name = "richTextBox2";
+            richTextBox2.Size = new Size(100, 96);
+            richTextBox2.TabIndex = 17;
+            richTextBox2.Text = "";
+            // 
+            // radioButton6
+            // 
+            radioButton6.AutoSize = true;
+            radioButton6.Location = new Point(29, 18);
+            radioButton6.Name = "radioButton6";
+            radioButton6.Size = new Size(51, 19);
+            radioButton6.TabIndex = 10;
+            radioButton6.Text = "Auto";
+            radioButton6.UseVisualStyleBackColor = true;
+            radioButton6.CheckedChanged += radioButton6_CheckedChanged;
+            radioButton6.Click += radioButton6_Click;
             // 
             // button3
             // 
-            this.button3.Location = new System.Drawing.Point(194, 4);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(47, 23);
-            this.button3.TabIndex = 12;
-            this.button3.Text = "A->a";
-            this.button3.UseVisualStyleBackColor = true;
-            this.button3.Click += new System.EventHandler(this.button3_Click);
+            button3.Location = new Point(207, 12);
+            button3.Name = "button3";
+            button3.Size = new Size(47, 23);
+            button3.TabIndex = 12;
+            button3.Text = "A->a";
+            button3.UseVisualStyleBackColor = true;
+            button3.Click += button3_Click;
             // 
             // button4
             // 
-            this.button4.Location = new System.Drawing.Point(324, 113);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(47, 23);
-            this.button4.TabIndex = 13;
-            this.button4.Text = "<---";
-            this.button4.UseVisualStyleBackColor = true;
-            this.button4.Click += new System.EventHandler(this.button4_Click);
+            button4.Location = new Point(357, 209);
+            button4.Name = "button4";
+            button4.Size = new Size(47, 23);
+            button4.TabIndex = 13;
+            button4.Text = "<---";
+            button4.UseVisualStyleBackColor = true;
+            button4.Click += button4_Click;
             // 
             // button5
             // 
-            this.button5.Location = new System.Drawing.Point(11, 113);
-            this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(47, 23);
-            this.button5.TabIndex = 14;
-            this.button5.Text = "--->";
-            this.button5.UseVisualStyleBackColor = true;
-            this.button5.Click += new System.EventHandler(this.button5_Click);
+            button5.Location = new Point(0, 209);
+            button5.Name = "button5";
+            button5.Size = new Size(47, 23);
+            button5.TabIndex = 14;
+            button5.Text = "--->";
+            button5.UseVisualStyleBackColor = true;
+            button5.Click += button5_Click;
             // 
             // checkBox1
             // 
-            this.checkBox1.AutoSize = true;
-            this.checkBox1.Checked = true;
-            this.checkBox1.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBox1.Location = new System.Drawing.Point(2, 7);
-            this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(139, 19);
-            this.checkBox1.TabIndex = 15;
-            this.checkBox1.Text = "Учитывать все знаки";
-            this.checkBox1.UseVisualStyleBackColor = true;
+            checkBox1.AutoSize = true;
+            checkBox1.Checked = true;
+            checkBox1.CheckState = CheckState.Checked;
+            checkBox1.Location = new Point(2, 7);
+            checkBox1.Name = "checkBox1";
+            checkBox1.Size = new Size(139, 19);
+            checkBox1.TabIndex = 15;
+            checkBox1.Text = "Учитывать все знаки";
+            checkBox1.UseVisualStyleBackColor = true;
             // 
             // Form1
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(383, 149);
-            this.Controls.Add(this.checkBox1);
-            this.Controls.Add(this.button5);
-            this.Controls.Add(this.button4);
-            this.Controls.Add(this.button3);
-            this.Controls.Add(this.button2);
-            this.Controls.Add(this.groupBox2);
-            this.Controls.Add(this.groupBox1);
-            this.Controls.Add(this.button1);
-            this.Name = "Form1";
-            this.Text = "Перевод раскладки";
-            this.Load += new System.EventHandler(this.Form1_Load);
-            this.groupBox1.ResumeLayout(false);
-            this.groupBox1.PerformLayout();
-            this.groupBox2.ResumeLayout(false);
-            this.groupBox2.PerformLayout();
-            this.ResumeLayout(false);
-            this.PerformLayout();
-
+            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleMode = AutoScaleMode.Font;
+            AutoSize = true;
+            ClientSize = new Size(412, 238);
+            Controls.Add(checkBox1);
+            Controls.Add(button5);
+            Controls.Add(button4);
+            Controls.Add(button2);
+            Controls.Add(button3);
+            Controls.Add(groupBox2);
+            Controls.Add(groupBox1);
+            Controls.Add(button1);
+            Name = "Form1";
+            Text = "Перевод раскладки";
+            Load += Form1_Load;
+            groupBox1.ResumeLayout(false);
+            groupBox1.PerformLayout();
+            groupBox2.ResumeLayout(false);
+            groupBox2.PerformLayout();
+            ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion
 
         private Button button1;
         private Label label1;
-        private TextBox textBox1;
-        private TextBox textBox2;
         private Label label2;
         private RadioButton radioButton1;
         private RadioButton radioButton2;
@@ -286,5 +288,7 @@
         private Button button4;
         private Button button5;
         private CheckBox checkBox1;
+        private RichTextBox richTextBox1;
+        private RichTextBox richTextBox2;
     }
 }
