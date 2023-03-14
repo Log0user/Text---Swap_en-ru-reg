@@ -38,6 +38,7 @@
             groupBox1 = new GroupBox();
             richTextBox1 = new RichTextBox();
             radioButton5 = new RadioButton();
+            label3 = new Label();
             button2 = new Button();
             groupBox2 = new GroupBox();
             richTextBox2 = new RichTextBox();
@@ -46,6 +47,7 @@
             button4 = new Button();
             button5 = new Button();
             checkBox1 = new CheckBox();
+            checkBox2 = new CheckBox();
             groupBox1.SuspendLayout();
             groupBox2.SuspendLayout();
             SuspendLayout();
@@ -159,6 +161,16 @@
             radioButton5.UseVisualStyleBackColor = true;
             radioButton5.Click += radioButton5_Click;
             // 
+            // label3
+            // 
+            label3.AutoSize = true;
+            label3.Location = new Point(140, 191);
+            label3.Name = "label3";
+            label3.Size = new Size(38, 15);
+            label3.TabIndex = 17;
+            label3.Text = "label3";
+            label3.Visible = false;
+            // 
             // button2
             // 
             button2.Location = new Point(154, 12);
@@ -182,6 +194,7 @@
             groupBox2.Size = new Size(199, 176);
             groupBox2.TabIndex = 10;
             groupBox2.TabStop = false;
+            groupBox2.Enter += groupBox2_Enter;
             // 
             // richTextBox2
             // 
@@ -245,12 +258,26 @@
             checkBox1.Text = "Учитывать все знаки";
             checkBox1.UseVisualStyleBackColor = true;
             // 
+            // checkBox2
+            // 
+            checkBox2.AutoSize = true;
+            checkBox2.Checked = true;
+            checkBox2.CheckState = CheckState.Checked;
+            checkBox2.Location = new Point(254, 7);
+            checkBox2.Name = "checkBox2";
+            checkBox2.Size = new Size(141, 19);
+            checkBox2.TabIndex = 16;
+            checkBox2.Text = "Использовать буфер";
+            checkBox2.UseVisualStyleBackColor = true;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             AutoSize = true;
             ClientSize = new Size(412, 238);
+            Controls.Add(label3);
+            Controls.Add(checkBox2);
             Controls.Add(checkBox1);
             Controls.Add(button5);
             Controls.Add(button4);
@@ -261,7 +288,11 @@
             Controls.Add(button1);
             Name = "Form1";
             Text = "Перевод раскладки";
+            FormClosed += Form1_FormClosed;
             Load += Form1_Load;
+            DoubleClick += Form1_DoubleClick;
+            Move += Form1_Move;
+            Resize += Form1_Resize;
             groupBox1.ResumeLayout(false);
             groupBox1.PerformLayout();
             groupBox2.ResumeLayout(false);
@@ -290,5 +321,7 @@
         private CheckBox checkBox1;
         private RichTextBox richTextBox1;
         private RichTextBox richTextBox2;
+        private CheckBox checkBox2;
+        private Label label3;
     }
 }

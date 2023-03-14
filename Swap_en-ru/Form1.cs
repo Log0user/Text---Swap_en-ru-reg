@@ -1,14 +1,77 @@
+using System.Reflection.Emit;
+using System.Windows.Forms;
+
 namespace Swap_en_ru
 {
+
     public partial class Form1 : Form
     {
+        private NotifyIcon notifyIcon;
         public Form1()
         {
+            // Создаем объект NotifyIcon
             InitializeComponent();
+            notifyIcon = new NotifyIcon();
+            notifyIcon.Icon = SystemIcons.Application;
+            notifyIcon.Visible = true;
+            notifyIcon.DoubleClick += NotifyIcon_DoubleClick;
+            notifyIcon.Text = "Swap en-ru";
+
+            // подписываемся на событие Move
+            this.Move += Form1_Move;
+
+            // подписываемся на событие MouseUp
+            // this.MouseUp += Form1_MouseUp;
+
+            // Подключаем обработчик события MouseClick
+            notifyIcon.MouseClick += notifyIcon_MouseClick;
+        }
+
+
+
+        // Обработчик события MouseClick для notifyIcon
+        private void notifyIcon_MouseClick(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right)
+            {
+                ContextMenuStrip menu = new ContextMenuStrip();
+                ToolStripMenuItem exitItem = new ToolStripMenuItem("Выход");
+                exitItem.Click += ExitItem_Click;
+                menu.Items.Add(exitItem);
+                notifyIcon.ContextMenuStrip = menu;
+                menu.Show(Control.MousePosition);
+            }
+        }
+
+        // Обработчик события для опции "Выход" в контекстном меню
+        private void ExitItem_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
+        }
+        private void Form1_Resize(object sender, EventArgs e)
+        {
+            if (WindowState == FormWindowState.Minimized)
+            {
+                Hide(); //Скрыть форму
+                // notifyIcon.ShowBalloonTip(500, "Заголовок", "Текст сообщения", ToolTipIcon.Info);
+                //notifyIcon.ShowBalloonTip(500);
+            }
+        }
+
+        private void NotifyIcon_DoubleClick(object sender, EventArgs e)
+        {
+            Show();
+            this.Location = new Point(182, 182);
+            WindowState = FormWindowState.Normal;
+            if (Clipboard.ContainsText())
+            {
+                UsingCipboard(false);
+            }
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
+            //ItsNotButton1Press();
             bool select = true;
             bool check = true;
 
@@ -37,7 +100,9 @@ namespace Swap_en_ru
             }
 
             richTextBox2.Text = Swap(richTextBox1.Text.ToString(), select, check);
+            UsingCipboard(true);
         }
+
 
         private string Swap(string a, bool s, bool c) // - фукция изменения раскладки
         {
@@ -326,10 +391,48 @@ namespace Swap_en_ru
 
             return result;
         }
+        private void UsingCipboard(bool a)// - Работа с буфером обмена
+        {
+
+            if (checkBox2.Checked)
+            {
+                if (!a)//- Появилась форма, или нажата кнопка? false - от формы, true - от кнопки
+                {
+                    string clipboardText = Clipboard.GetText();
+                    // Дальнейшая обработка полученного текста
+                    richTextBox1.Text = clipboardText;
+
+                    button1.PerformClick();
+
+                    //ItsNotButton1Press();
+                    Clipboard.SetText(richTextBox2.Text);
+
+
+                    IDataObject data = new DataObject();
+                    data.SetData(DataFormats.UnicodeText, true, richTextBox2.Text);
+                }
+                else
+                {
+                    IDataObject data = new DataObject();
+                    data.SetData(DataFormats.UnicodeText, true, richTextBox2.Text);
+                }
+
+            }
+
+        }
         private void Form1_Load(object sender, EventArgs e)
         {
             radioButton5.Checked = true;
             radioButton6.Checked = true;
+            //// Создание и загрузка иконки
+            //Icon icon = new Icon("1.ico"); //Когда-нмбудь потом
+
+            //// Установка иконки для формы
+            //this.Icon = icon;
+            if (Clipboard.ContainsText())
+            {
+                UsingCipboard(false);
+            }
         }
 
         private void radioButton1_Click(object sender, EventArgs e)
@@ -435,5 +538,63 @@ namespace Swap_en_ru
             richTextBox1.Text = richTextBox2.Text;
             richTextBox2.Clear();
         }
+
+        private void groupBox2_Enter(object sender, EventArgs e)
+        {
+
+        }
+
+
+
+        private void Form1_DoubleClick(object sender, EventArgs e)
+        {
+
+        }
+
+
+
+        private void Form1_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            Application.Exit();
+        }
+
+        private void Form1_Move(object sender, EventArgs e)
+        {
+            int x = this.Location.X;
+            int y = this.Location.Y;
+            label3.Text = $"Форма находится на координатах ({x}, {y})";
+            if (x > 1500 && y > 1000)
+            {
+                Hide();
+                //Form1_Resize(this, EventArgs.Empty);
+            }
+        }
+
+        //private void Form1_MouseUp(object sender, MouseEventArgs e)
+        //{
+        //    if (e.Button == MouseButtons.Left)
+        //    {
+        //        // выполняем действия, когда отпущена левая кнопка мыши
+        //        MessageBox.Show("Левая кнопка мыши была отпущена");
+
+        //        button1.Text = "button1";
+        //    }
+        //}
     }
+
+    //private void Form1_Resize(object sender, EventArgs e)
+    //{
+    //    if (WindowState == FormWindowState.Minimized)
+    //    {
+    //        Hide();
+    //        notifyIcon.ShowBalloonTip(500);
+    //    }
+    //}
+    //private void NotifyIcon_DoubleClick(object sender, EventArgs e)
+    //{
+    //    Show();
+    //    WindowState = FormWindowState.Normal;
+    //}
+
+
 }
