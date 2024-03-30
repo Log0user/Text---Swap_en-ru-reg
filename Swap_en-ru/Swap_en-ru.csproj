@@ -9,4 +9,12 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Content Remove="C:\Users\okiri\.nuget\packages\windowsinput\6.4.1\contentFiles\any\net6.0-windows7.0\.nuget\mouse-keyboard-hook-logo.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="WindowsInput" Version="6.4.1" />
+  </ItemGroup>
+
 </Project>

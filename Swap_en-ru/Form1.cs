@@ -1,16 +1,60 @@
 using System.Reflection.Emit;
+using System.Runtime.InteropServices;
+using System.Text;
 using System.Windows.Forms;
+
+
+
+
+
 
 namespace Swap_en_ru
 {
 
     public partial class Form1 : Form
     {
+
+
+        // Определения функций из user32.dll для работы с горячими клавишами
+        [DllImport("user32.dll")]
+        private static extern bool RegisterHotKey(IntPtr hWnd, int id, uint fsModifiers, uint vk);
+
+        [DllImport("user32.dll")]
+        private static extern bool UnregisterHotKey(IntPtr hWnd, int id);
+
+        // Определения функций из user32.dll для работы с активным окном
+        
+
+        // Константы и функции для работы с буфером обмена
+        private const int WM_GETTEXT = 0x000D;
+
+        // Константы для модификаторов клавиш (Alt, Ctrl, Shift, Win)
+        private const uint MOD_NONE = 0x0000; // Без модификаторов
+        private const uint MOD_ALT = 0x0001; // Alt
+        private const uint MOD_CONTROL = 0x0002; // Ctrl
+        private const uint MOD_SHIFT = 0x0004; // Shift
+        private const uint MOD_WIN = 0x0008; // Win
+
+        // Константы для клавиш
+        private const uint VK_F9 = 0x78; // Код клавиши F9
+
+        // ID горячей клавиши
+        private const int HOTKEY_ID = 1;
+
+
+
         private NotifyIcon notifyIcon;
         public Form1()
         {
             // Создаем объект NotifyIcon
             InitializeComponent();
+
+            // Регистрация горячей клавиши Ctrl+F9 при инициализации формы
+            RegisterHotKey(this.Handle, HOTKEY_ID, MOD_CONTROL, VK_F9);
+
+            // Регистрация горячей клавиши F9 без модификаторов
+            RegisterHotKey(this.Handle, HOTKEY_ID + 1, MOD_NONE, VK_F9);
+
             notifyIcon = new NotifyIcon();
             notifyIcon.Icon = SystemIcons.Application;
             notifyIcon.Visible = true;
@@ -20,16 +64,61 @@ namespace Swap_en_ru
             // подписываемся на событие Move
             this.Move += Form1_Move;
 
-            // подписываемся на событие MouseUp
-            // this.MouseUp += Form1_MouseUp;
-
             // Подключаем обработчик события MouseClick
             notifyIcon.MouseClick += notifyIcon_MouseClick;
+
+            this.KeyPreview = true; // Установка свойства KeyPreview в true для перехвата f9
+        }
+
+
+        // Метод для обработки сообщений Windows
+        protected override void WndProc(ref Message m)
+        {
+            base.WndProc(ref m);
+
+            // Проверяем сообщения о нажатии горячей клавиши
+            if (m.Msg == 0x0312)
+            {
+                // Проверяем, была ли нажата комбинация Ctrl+F9
+                if (m.WParam.ToInt32() == HOTKEY_ID)
+                {
+                    // Реакция на нажатие комбинации Ctrl+F9
+                   // MessageBox.Show("Горячая клавиша Ctrl+F9 нажата!");
+
+                    // Копирование выделенного текста в буфер обмена
+                    CopySelectedTextToClipboard();
+
+                    NotifyIcon_DoubleClick(null, null); // Вызов функции - Даблклик по скрытой форме
+                }
+                // Проверяем, была ли нажата клавиша F9 без модификаторов
+                else if (m.WParam.ToInt32() == HOTKEY_ID + 1)
+                {
+                    // Реакция на нажатие клавиши F9 без модификаторов
+                    //MessageBox.Show("Горячая клавиша F9 нажата!");
+                    NotifyIcon_DoubleClick(null, null); //Вызов функции - Даблклик по скрытой форме
+                }
+            }
         }
 
 
 
-        // Обработчик события MouseClick для notifyIcon
+
+
+        // Метод для копирования выделенного текста из активного окна в буфер обмена
+        private void CopySelectedTextToClipboard()
+        {
+           //Логика копирования выделенного текста, доделай
+        }
+
+
+
+
+
+
+
+
+
+        // Обработчик события MouseClick для notifyIcon -ПКМ
         private void notifyIcon_MouseClick(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Right)
@@ -48,17 +137,16 @@ namespace Swap_en_ru
         {
             Application.Exit();
         }
+
         private void Form1_Resize(object sender, EventArgs e)
         {
             if (WindowState == FormWindowState.Minimized)
             {
-                Hide(); //Скрыть форму
-                // notifyIcon.ShowBalloonTip(500, "Заголовок", "Текст сообщения", ToolTipIcon.Info);
-                //notifyIcon.ShowBalloonTip(500);
+                Hide(); //Скрыть форму               
             }
         }
 
-        private void NotifyIcon_DoubleClick(object sender, EventArgs e)
+        private void NotifyIcon_DoubleClick(object sender, EventArgs e) //Даблклик по скрытой форме
         {
             Show();
             this.Location = new Point(182, 182);
@@ -111,8 +199,8 @@ namespace Swap_en_ru
             // string ru = "йцукенгшщзхъфывапролджэячсмитьбю.";          
             // string en = "qwertyuiop[]asdfghjkl;'zxcvbnm,./";
 
-            string ru = "йцукенгшщзхъфывапролджэячсмитьбю.!№;%:?*()_+/@";
-            string en = "qwertyuiop[]asdfghjkl;'zxcvbnm,./!#$%^&*()_+|\"";
+            string ru = "йцукенгшщзхъфывапролджэячсмитьбю.!№;%:?*()_+/@{";   //Не работает с "/", пофикси
+            string en = "qwertyuiop[]asdfghjkl;'zxcvbnm,./!#$%^&*()_+|\"х";
 
             string result = "";
 
@@ -398,18 +486,33 @@ namespace Swap_en_ru
             {
                 if (!a)//- Появилась форма, или нажата кнопка? false - от формы, true - от кнопки
                 {
+                    // Получение текста из буфера обмена
                     string clipboardText = Clipboard.GetText();
-                    // Дальнейшая обработка полученного текста
-                    richTextBox1.Text = clipboardText;
-
-                    button1.PerformClick();
-
-                    //ItsNotButton1Press();
-                    Clipboard.SetText(richTextBox2.Text);
 
 
-                    IDataObject data = new DataObject();
-                    data.SetData(DataFormats.UnicodeText, true, richTextBox2.Text);
+                    // Проверка, не пуст ли текст из буфера обмена
+                    if (!string.IsNullOrEmpty(clipboardText))
+                    {
+                        // Дальнейшая обработка полученного текста
+                        // Установка текста из буфера обмена в richTextBox1
+                        richTextBox1.Text = clipboardText;
+
+                        //Симуляция нажатия кнопки button1
+                        button1.PerformClick();
+
+                        // Установка текста из richTextBox2 в буфер обмена
+                        Clipboard.SetText(richTextBox2.Text);
+
+                        // Создание объекта данных и установка данных в формате UnicodeText
+                        IDataObject data = new DataObject();
+                        data.SetData(DataFormats.UnicodeText, true, richTextBox2.Text);
+
+                    }
+                    else
+                    {
+                        // Обработка ситуации, когда буфер обмена пуст
+                        MessageBox.Show("Буфер обмена пуст!");
+                    }
                 }
                 else
                 {
@@ -546,13 +649,6 @@ namespace Swap_en_ru
 
 
 
-        private void Form1_DoubleClick(object sender, EventArgs e)
-        {
-
-        }
-
-
-
         private void Form1_FormClosed(object sender, FormClosedEventArgs e)
         {
             Application.Exit();
@@ -565,36 +661,10 @@ namespace Swap_en_ru
             label3.Text = $"Форма находится на координатах ({x}, {y})";
             if (x > 1500 && y > 1000)
             {
-                Hide();
-                //Form1_Resize(this, EventArgs.Empty);
+                Hide();                
             }
         }
-
-        //private void Form1_MouseUp(object sender, MouseEventArgs e)
-        //{
-        //    if (e.Button == MouseButtons.Left)
-        //    {
-        //        // выполняем действия, когда отпущена левая кнопка мыши
-        //        MessageBox.Show("Левая кнопка мыши была отпущена");
-
-        //        button1.Text = "button1";
-        //    }
-        //}
+       
     }
-
-    //private void Form1_Resize(object sender, EventArgs e)
-    //{
-    //    if (WindowState == FormWindowState.Minimized)
-    //    {
-    //        Hide();
-    //        notifyIcon.ShowBalloonTip(500);
-    //    }
-    //}
-    //private void NotifyIcon_DoubleClick(object sender, EventArgs e)
-    //{
-    //    Show();
-    //    WindowState = FormWindowState.Normal;
-    //}
-
 
 }

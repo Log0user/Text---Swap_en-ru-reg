@@ -1,11 +1,55 @@
 {
   "version": 3,
   "targets": {
-    "net6.0-windows7.0": {}
+    "net6.0-windows7.0": {
+      "WindowsInput/6.4.1": {
+        "type": "package",
+        "compile": {
+          "lib/net6.0-windows7.0/WindowsInput.dll": {}
+        },
+        "runtime": {
+          "lib/net6.0-windows7.0/WindowsInput.dll": {}
+        },
+        "frameworkReferences": [
+          "Microsoft.WindowsDesktop.App.WPF"
+        ],
+        "contentFiles": {
+          "contentFiles/any/net6.0-windows7.0/.nuget/mouse-keyboard-hook-logo.png": {
+            "buildAction": "Content",
+            "codeLanguage": "any",
+            "copyToOutput": false
+          }
+        }
+      }
+    }
   },
-  "libraries": {},
+  "libraries": {
+    "WindowsInput/6.4.1": {
+      "sha512": "wfg9uu5xDvBcaNqvR1ZTFQqBf4bKzkxdd5WviTZPy4cAywEzLzofuYswZB3nGIEnnlwGLBGSgrNOEZH/w8JI9w==",
+      "type": "package",
+      "path": "windowsinput/6.4.1",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "LICENSE.txt",
+        "README.md",
+        "content/.nuget/mouse-keyboard-hook-logo.png",
+        "contentFiles/any/net461/.nuget/mouse-keyboard-hook-logo.png",
+        "contentFiles/any/net6.0-windows7.0/.nuget/mouse-keyboard-hook-logo.png",
+        "contentFiles/any/netcoreapp3.1/.nuget/mouse-keyboard-hook-logo.png",
+        "lib/net461/WindowsInput.dll",
+        "lib/net6.0-windows7.0/WindowsInput.dll",
+        "lib/netcoreapp3.1/WindowsInput.dll",
+        "mouse-keyboard-hook-logo.png",
+        "windowsinput.6.4.1.nupkg.sha512",
+        "windowsinput.nuspec"
+      ]
+    }
+  },
   "projectFileDependencyGroups": {
-    "net6.0-windows7.0": []
+    "net6.0-windows7.0": [
+      "WindowsInput >= 6.4.1"
+    ]
   },
   "packageFolders": {
     "C:\\Users\\okiri\\.nuget\\packages\\": {},
@@ -14,11 +58,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\okiri\\source\\repos\\Swap_en-ru — копия\\Swap_en-ru\\Swap_en-ru.csproj",
+      "projectUniqueName": "C:\\Users\\okiri\\Downloads\\1\\Text---Swap_en-ru-reg-Tray_and_clipboard\\Swap_en-ru\\Swap_en-ru.csproj",
       "projectName": "Swap_en-ru",
-      "projectPath": "C:\\Users\\okiri\\source\\repos\\Swap_en-ru — копия\\Swap_en-ru\\Swap_en-ru.csproj",
+      "projectPath": "C:\\Users\\okiri\\Downloads\\1\\Text---Swap_en-ru-reg-Tray_and_clipboard\\Swap_en-ru\\Swap_en-ru.csproj",
       "packagesPath": "C:\\Users\\okiri\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\okiri\\source\\repos\\Swap_en-ru — копия\\Swap_en-ru\\obj\\",
+      "outputPath": "C:\\Users\\okiri\\Downloads\\1\\Text---Swap_en-ru-reg-Tray_and_clipboard\\Swap_en-ru\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "D:\\Visual Studio\\Shared\\NuGetPackages"
@@ -46,11 +90,22 @@
         "warnAsError": [
           "NU1605"
         ]
+      },
+      "restoreAuditProperties": {
+        "enableAudit": "true",
+        "auditLevel": "low",
+        "auditMode": "direct"
       }
     },
     "frameworks": {
       "net6.0-windows7.0": {
         "targetAlias": "net6.0-windows",
+        "dependencies": {
+          "WindowsInput": {
+            "target": "Package",
+            "version": "[6.4.1, )"
+          }
+        },
         "imports": [
           "net461",
           "net462",
@@ -70,7 +125,7 @@
             "privateAssets": "none"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.200\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.202\\RuntimeIdentifierGraph.json"
       }
     }
   }

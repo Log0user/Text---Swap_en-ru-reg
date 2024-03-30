@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\okiri\\source\\repos\\Swap_en-ru — копия\\Swap_en-ru\\Swap_en-ru.csproj": {}
+    "C:\\Users\\okiri\\Downloads\\1\\Text---Swap_en-ru-reg-Tray_and_clipboard\\Swap_en-ru\\Swap_en-ru.csproj": {}
   },
   "projects": {
-    "C:\\Users\\okiri\\source\\repos\\Swap_en-ru — копия\\Swap_en-ru\\Swap_en-ru.csproj": {
+    "C:\\Users\\okiri\\Downloads\\1\\Text---Swap_en-ru-reg-Tray_and_clipboard\\Swap_en-ru\\Swap_en-ru.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\okiri\\source\\repos\\Swap_en-ru — копия\\Swap_en-ru\\Swap_en-ru.csproj",
+        "projectUniqueName": "C:\\Users\\okiri\\Downloads\\1\\Text---Swap_en-ru-reg-Tray_and_clipboard\\Swap_en-ru\\Swap_en-ru.csproj",
         "projectName": "Swap_en-ru",
-        "projectPath": "C:\\Users\\okiri\\source\\repos\\Swap_en-ru — копия\\Swap_en-ru\\Swap_en-ru.csproj",
+        "projectPath": "C:\\Users\\okiri\\Downloads\\1\\Text---Swap_en-ru-reg-Tray_and_clipboard\\Swap_en-ru\\Swap_en-ru.csproj",
         "packagesPath": "C:\\Users\\okiri\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\okiri\\source\\repos\\Swap_en-ru — копия\\Swap_en-ru\\obj\\",
+        "outputPath": "C:\\Users\\okiri\\Downloads\\1\\Text---Swap_en-ru-reg-Tray_and_clipboard\\Swap_en-ru\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "D:\\Visual Studio\\Shared\\NuGetPackages"
@@ -39,11 +39,22 @@
           "warnAsError": [
             "NU1605"
           ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
         }
       },
       "frameworks": {
         "net6.0-windows7.0": {
           "targetAlias": "net6.0-windows",
+          "dependencies": {
+            "WindowsInput": {
+              "target": "Package",
+              "version": "[6.4.1, )"
+            }
+          },
           "imports": [
             "net461",
             "net462",
@@ -63,7 +74,7 @@
               "privateAssets": "none"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.200\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.202\\RuntimeIdentifierGraph.json"
         }
       }
     }

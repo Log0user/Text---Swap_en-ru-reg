@@ -1,8 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "COysvNZzULJ/Fwa5JgWp1NbUb2SfOeFyv8WYrbnvCe0F12XROWR0ASJiQnqP+NGDtHVv01CI+abdEqeJVMujnw==",
+  "dgSpecHash": "OkRJRGN9Gatizn8ZA1HzV4uTAL4623DOI2GP4jkoi//Oo/p6GxZpQ6Fj1Y0kuQ5dRjTd9O12N6bzuF3SYnF6Aw==",
   "success": true,
-  "projectFilePath": "C:\\Users\\okiri\\source\\repos\\Swap_en-ru — копия\\Swap_en-ru\\Swap_en-ru.csproj",
-  "expectedPackageFiles": [],
+  "projectFilePath": "C:\\Users\\okiri\\Downloads\\1\\Text---Swap_en-ru-reg-Tray_and_clipboard\\Swap_en-ru\\Swap_en-ru.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\okiri\\.nuget\\packages\\windowsinput\\6.4.1\\windowsinput.6.4.1.nupkg.sha512"
+  ],
   "logs": []
 }

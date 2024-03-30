@@ -6,6 +6,14 @@
   "compilationOptions": {},
   "targets": {
     ".NETCoreApp,Version=v6.0": {
+      "Swap_en-ru/1.0.0": {
+        "dependencies": {
+          "WindowsInput": "6.4.1"
+        },
+        "runtime": {
+          "Swap_en-ru.dll": {}
+        }
+      },
       "WindowsInput/6.4.1": {
         "runtime": {
           "lib/net6.0-windows7.0/WindowsInput.dll": {
@@ -17,6 +25,11 @@
     }
   },
   "libraries": {
+    "Swap_en-ru/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
     "WindowsInput/6.4.1": {
       "type": "package",
       "serviceable": true,

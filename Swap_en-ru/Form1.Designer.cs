@@ -290,7 +290,6 @@
             Text = "Перевод раскладки";
             FormClosed += Form1_FormClosed;
             Load += Form1_Load;
-            DoubleClick += Form1_DoubleClick;
             Move += Form1_Move;
             Resize += Form1_Resize;
             groupBox1.ResumeLayout(false);
