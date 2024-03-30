@@ -1,5 +1,6 @@
 # Text---Swap_en-ru-reg
 Перевод раскладки.
+
 Небольшой инструмент работы с текстом, позволяющий превратить это ghbdtn в это -> привет. И наоборот.
 
 ![image](https://github.com/Log0user/Text---Swap_en-ru-reg/assets/120344565/18990b3f-172f-4b95-adf2-5204dc3f72e8)
