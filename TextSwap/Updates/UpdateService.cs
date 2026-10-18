@@ -123,7 +123,8 @@ public static class UpdateService
         start.ArgumentList.Add("--apply-update");
         start.ArgumentList.Add(current);
         start.ArgumentList.Add(Environment.ProcessId.ToString(System.Globalization.CultureInfo.InvariantCulture));
-        Process.Start(start) ?? throw new InvalidOperationException("Не удалось запустить установщик.");
+        if (Process.Start(start) is null)
+            throw new InvalidOperationException("Не удалось запустить установщик.");
     }
 
     public static int ApplyUpdate(string[] args)
