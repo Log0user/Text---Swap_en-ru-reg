@@ -1,0 +1,45 @@
+name: Build Text Swap
+
+on:
+  push:
+    branches: [master, main]
+    tags: ['v*']
+  workflow_dispatch:
+  pull_request:
+    branches: [master]
+
+permissions:
+  contents: write
+
+jobs:
+  windows:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Install .NET SDK
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+      - name: Test keyboard conversion
+        run: dotnet run --project Tests/Tests.csproj --configuration Release
+      - name: Publish portable EXE
+        run: dotnet publish TextSwap/TextSwap.csproj -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true -p:PublishTrimmed=false -o publish
+      - name: Prepare assets and checksum
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force -Path dist | Out-Null
+          Copy-Item publish/TextSwap.exe dist/TextSwap-win-x64.exe
+          $hash = (Get-FileHash dist/TextSwap-win-x64.exe -Algorithm SHA256).Hash.ToLowerInvariant()
+          [System.IO.File]::WriteAllText("dist/TextSwap-win-x64.exe.sha256", "$hash  TextSwap-win-x64.exe`n", [System.Text.Encoding]::ASCII)
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: TextSwap-win-x64
+          path: dist/*
+      - name: Publish GitHub Release on version tag
+        if: startsWith(github.ref, 'refs/tags/v')
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: pwsh
+        run: gh release create "$env:GITHUB_REF_NAME" dist/TextSwap-win-x64.exe dist/TextSwap-win-x64.exe.sha256 --title "Text Swap $env:GITHUB_REF_NAME" --generate-notes
