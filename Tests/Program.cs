@@ -27,4 +27,26 @@ var inverted = LayoutConverter.ConvertDirection(
     LayoutConverter.ConvertDirection(englishKeys, Direction.EnglishToRussian),
     Direction.RussianToEnglish);
 Assert(englishKeys, inverted, "mapping bijection for supported symbols");
+
+// The updater's rollback operation only touches EXE files, not saved settings.
+var tempDir = Path.Combine(Path.GetTempPath(), "TextSwap-test-" + Guid.NewGuid().ToString("N"));
+Directory.CreateDirectory(tempDir);
+try
+{
+    string exe = Path.Combine(tempDir, "TextSwap.exe");
+    File.WriteAllText(exe, "version 2.0.1");
+    File.WriteAllText(exe + ".previous", "version 2.0.0");
+    BackupSwap.RestorePrevious(exe);
+    Assert("version 2.0.0", File.ReadAllText(exe), "rollback restores previous EXE");
+    Assert("version 2.0.1", File.ReadAllText(exe + ".previous"), "rollback saves displaced EXE");
+    Assert("False", File.Exists(exe + ".rollback-stage").ToString(), "rollback removes staging file");
+}
+finally
+{
+    Directory.Delete(tempDir, recursive: true);
+}
+Assert("System", AppTheme.System.ToString(), "system theme is available");
+Assert("Light", AppTheme.Light.ToString(), "light theme is available");
+Assert("Dark", AppTheme.Dark.ToString(), "dark theme is available");
+
 Console.WriteLine($"PASSED: {passed} tests");

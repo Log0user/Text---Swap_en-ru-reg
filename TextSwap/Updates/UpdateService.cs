@@ -3,6 +3,7 @@ using System.Net.Http.Headers;
 using System.Security.Cryptography;
 using System.Text.Json;
 using System.Text.RegularExpressions;
+using TextSwap.Core;
 
 namespace TextSwap.Updates;
 
@@ -125,6 +126,86 @@ public static class UpdateService
         start.ArgumentList.Add(Environment.ProcessId.ToString(System.Globalization.CultureInfo.InvariantCulture));
         if (Process.Start(start) is null)
             throw new InvalidOperationException("Не удалось запустить установщик.");
+    }
+
+    public static string? PreviousVersionPath
+    {
+        get
+        {
+            string? current = Environment.ProcessPath;
+            if (current is null || !current.EndsWith(".exe", StringComparison.OrdinalIgnoreCase)) return null;
+            string backup = current + ".previous";
+            return File.Exists(backup) && new FileInfo(backup).Length > 0 ? backup : null;
+        }
+    }
+
+    /// <summary>
+    /// The running EXE cannot replace itself. A temporary copy of the current EXE
+    /// waits for the app to exit and restores the .previous file in its place.
+    /// </summary>
+    public static void LaunchRollback()
+    {
+        string previous = PreviousVersionPath ?? throw new FileNotFoundException(
+            "Резервная копия предыдущей версии не найдена.");
+        string current = Environment.ProcessPath!;
+        string tempFolder = Path.Combine(Path.GetTempPath(), "TextSwap-update-" + Guid.NewGuid().ToString("N"));
+        Directory.CreateDirectory(tempFolder);
+        string helper = Path.Combine(tempFolder, "TextSwap.exe");
+        try
+        {
+            File.Copy(current, helper);
+            var start = new ProcessStartInfo(helper) { UseShellExecute = false };
+            start.ArgumentList.Add("--apply-rollback");
+            start.ArgumentList.Add(current);
+            start.ArgumentList.Add(Environment.ProcessId.ToString(System.Globalization.CultureInfo.InvariantCulture));
+            if (Process.Start(start) is null)
+                throw new InvalidOperationException("Не удалось запустить откат.");
+        }
+        catch
+        {
+            try { Directory.Delete(tempFolder, recursive: true); }
+            catch (IOException) { }
+            catch (UnauthorizedAccessException) { }
+            throw;
+        }
+    }
+
+    public static int ApplyRollback(string[] args)
+    {
+        try
+        {
+            if (args.Length != 3 || !int.TryParse(args[2], out int previousPid)) return 2;
+            string original = Path.GetFullPath(args[1]);
+            if (!original.EndsWith(".exe", StringComparison.OrdinalIgnoreCase) || !File.Exists(original))
+                throw new FileNotFoundException("Установленный EXE не найден.", original);
+            string backup = original + ".previous";
+            if (!File.Exists(backup)) throw new FileNotFoundException("Предыдущая версия не найдена.", backup);
+            if (previousPid == Environment.ProcessId) throw new InvalidOperationException("Недопустимый PID.");
+
+            try
+            {
+                using var oldProcess = Process.GetProcessById(previousPid);
+                if (!oldProcess.WaitForExit(30_000)) throw new TimeoutException("Программа не закрылась за 30 секунд.");
+            }
+            catch (ArgumentException) { /* Already exited. */ }
+
+            BackupSwap.RestorePrevious(original);
+
+            // The restored older EXE already understands --cleanup-updater.
+            var start = new ProcessStartInfo(original) { UseShellExecute = true };
+            start.ArgumentList.Add("--cleanup-updater");
+            start.ArgumentList.Add(Environment.ProcessPath!);
+            if (Process.Start(start) is null)
+                throw new InvalidOperationException("Версия восстановлена, но перезапуск не удался.");
+            return 0;
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show("Не удалось выполнить откат. Проверь файлы программы и при необходимости " +
+                            "запусти её вручную.\n\n" + ex.Message,
+                "Text Swap — откат", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            return 1;
+        }
     }
 
     public static int ApplyUpdate(string[] args)

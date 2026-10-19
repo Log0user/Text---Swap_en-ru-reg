@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using TextSwap.Core;
 using TextSwap.Updates;
 
 namespace TextSwap;
@@ -12,10 +13,13 @@ public sealed class AboutForm : Form
     };
     private readonly Button _check = new() { Text = "Проверить обновление", AutoSize = true };
     private readonly Button _update = new() { Text = "Обновить", AutoSize = true, Enabled = false };
+    private readonly Button _rollback = new() { Text = "Откатить версию", AutoSize = true };
+    private readonly AppTheme _theme;
     private AvailableUpdate? _available;
 
-    public AboutForm()
+    public AboutForm(AppTheme theme)
     {
+        _theme = theme;
         Text = "О программе — Text Swap";
         Size = new System.Drawing.Size(540, 295);
         MinimumSize = Size;
@@ -58,9 +62,49 @@ public sealed class AboutForm : Form
         var buttons = new FlowLayoutPanel { Dock = DockStyle.Fill, FlowDirection = FlowDirection.LeftToRight };
         _check.Click += async (_, _) => await CheckAsync();
         _update.Click += async (_, _) => await InstallAsync();
+        _rollback.Click += (_, _) => Rollback();
+        _rollback.Enabled = UpdateService.PreviousVersionPath is not null;
         buttons.Controls.Add(_check);
         buttons.Controls.Add(_update);
+        buttons.Controls.Add(_rollback);
         layout.Controls.Add(buttons, 0, 4);
+        ThemeManager.Apply(this, _theme);
+    }
+
+    protected override void OnHandleCreated(EventArgs e)
+    {
+        base.OnHandleCreated(e);
+        ThemeManager.Apply(this, _theme);
+    }
+
+    private void Rollback()
+    {
+        string? previous = UpdateService.PreviousVersionPath;
+        if (previous is null)
+        {
+            _rollback.Enabled = false;
+            _message.Text = "Нет резервной копии предыдущей версии рядом с EXE.";
+            return;
+        }
+
+        var answer = MessageBox.Show(this,
+            "Восстановить предыдущую версию из файла TextSwap.exe.previous? " +
+            "Приложение перезапустится. Настройки останутся без изменений. " +
+            "После возврата к 2.0.0 кнопка отката будет отсутствовать.",
+            "Откат Text Swap", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+        if (answer != DialogResult.Yes) return;
+
+        try
+        {
+            _rollback.Enabled = false;
+            UpdateService.LaunchRollback();
+            Application.Exit();
+        }
+        catch (Exception ex)
+        {
+            _message.Text = "Ошибка отката: " + ex.Message;
+            _rollback.Enabled = UpdateService.PreviousVersionPath is not null;
+        }
     }
 
     private static void OpenUrl(string url) =>

@@ -9,5 +9,7 @@
     <Compile Include="../TextSwap/Core/ConversionMode.cs" Link="ConversionMode.cs" />
     <Compile Include="../TextSwap/Core/LayoutDetector.cs" Link="LayoutDetector.cs" />
     <Compile Include="../TextSwap/Core/LayoutConverter.cs" Link="LayoutConverter.cs" />
+    <Compile Include="../TextSwap/Core/AppTheme.cs" Link="AppTheme.cs" />
+    <Compile Include="../TextSwap/Core/BackupSwap.cs" Link="BackupSwap.cs" />
   </ItemGroup>
 </Project>
