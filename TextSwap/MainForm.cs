@@ -13,6 +13,8 @@ public sealed class MainForm : Form
 
     private readonly AppSettings _settings;
     private readonly ComboBox _mode = new() { DropDownStyle = ComboBoxStyle.DropDownList, Width = 245 };
+    private readonly ComboBox _theme = new() { DropDownStyle = ComboBoxStyle.DropDownList, Width = 145 };
+    private bool _currentDark;
     private readonly TextBox _input = new() { Multiline = true, ScrollBars = ScrollBars.Both, WordWrap = true, Dock = DockStyle.Fill };
     private readonly TextBox _output = new() { Multiline = true, ScrollBars = ScrollBars.Both, WordWrap = true, Dock = DockStyle.Fill, ReadOnly = true };
     private readonly Label _status = new() { Dock = DockStyle.Fill, AutoEllipsis = true, TextAlign = ContentAlignment.MiddleLeft };
@@ -49,6 +51,7 @@ public sealed class MainForm : Form
         };
         _tray.DoubleClick += (_, _) => ConvertClipboardAndShow();
         _initialized = true;
+        ApplyTheme();
     }
 
     private void BuildInterface()
@@ -89,6 +92,17 @@ public sealed class MainForm : Form
             SaveSettings();
         };
         toolbar.Controls.Add(_mode);
+        toolbar.Controls.Add(new Label { Text = "Тема:", AutoSize = true, Margin = new Padding(8, 9, 4, 0) });
+        _theme.Items.AddRange(["Как в Windows", "Светлая", "Тёмная"]);
+        _theme.SelectedIndex = (int)_settings.Theme;
+        _theme.SelectedIndexChanged += (_, _) =>
+        {
+            if (!_initialized) return;
+            _settings.Theme = (AppTheme)_theme.SelectedIndex;
+            SaveSettings();
+            ApplyTheme();
+        };
+        toolbar.Controls.Add(_theme);
         toolbar.Controls.Add(MakeButton("Преобразовать", (_, _) => ConvertInput()));
         toolbar.Controls.Add(MakeButton("О программе", (_, _) => ShowAbout()));
         main.Controls.Add(toolbar, 0, 1);
@@ -215,7 +229,7 @@ public sealed class MainForm : Form
 
     private void ShowAbout()
     {
-        using var about = new AboutForm();
+        using var about = new AboutForm(_settings.Theme);
         about.ShowDialog(this);
     }
 
@@ -258,6 +272,7 @@ public sealed class MainForm : Form
     protected override void OnHandleCreated(EventArgs e)
     {
         base.OnHandleCreated(e);
+        if (_initialized) ApplyTheme();
         RefreshHotkeys();
     }
 
@@ -285,6 +300,20 @@ public sealed class MainForm : Form
         base.OnHandleDestroyed(e);
     }
 
+    private void ApplyTheme()
+    {
+        _currentDark = ThemeManager.IsDark(_settings.Theme);
+        ThemeManager.Apply(this, _settings.Theme, _tray.ContextMenuStrip);
+        _status.ForeColor = _currentDark ? Color.FromArgb(179, 187, 202) : SystemColors.GrayText;
+    }
+
+    protected override void OnActivated(EventArgs e)
+    {
+        base.OnActivated(e);
+        if (_settings.Theme == AppTheme.System && _currentDark != ThemeManager.IsDark(AppTheme.System))
+            ApplyTheme();
+    }
+
     protected override void WndProc(ref Message message)
     {
         if (message.Msg == NativeMethods.WM_HOTKEY)
@@ -294,6 +323,10 @@ public sealed class MainForm : Form
             else if (id == SelectionHotkeyId) _ = ConvertSelectionAsync();
         }
         base.WndProc(ref message);
+        // Settings change, including the system light/dark application theme.
+        if ((message.Msg == 0x001A || message.Msg == 0x031A) && _initialized &&
+            _settings.Theme == AppTheme.System && _currentDark != ThemeManager.IsDark(AppTheme.System))
+            ApplyTheme();
     }
 
     private async Task ConvertSelectionAsync()

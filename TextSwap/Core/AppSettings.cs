@@ -5,6 +5,7 @@ namespace TextSwap.Core;
 public sealed class AppSettings
 {
     public ConversionMode Mode { get; set; } = ConversionMode.Auto;
+    public AppTheme Theme { get; set; } = AppTheme.System;
     public bool AutoCopyResult { get; set; } = false;
     public bool StartMinimized { get; set; } = false;
     public bool MinimizeToTray { get; set; } = true;
@@ -22,6 +23,7 @@ public sealed class AppSettings
             if (!File.Exists(SettingsPath)) return new AppSettings();
             var settings = JsonSerializer.Deserialize<AppSettings>(File.ReadAllText(SettingsPath)) ?? new();
             if (!Enum.IsDefined(settings.Mode)) settings.Mode = ConversionMode.Auto;
+            if (!Enum.IsDefined(settings.Theme)) settings.Theme = AppTheme.System;
             return settings;
         }
         catch (Exception ex) when (ex is IOException or UnauthorizedAccessException or JsonException)
