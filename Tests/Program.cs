@@ -49,4 +49,19 @@ Assert("System", AppTheme.System.ToString(), "system theme is available");
 Assert("Light", AppTheme.Light.ToString(), "light theme is available");
 Assert("Dark", AppTheme.Dark.ToString(), "dark theme is available");
 
+Assert("Откатить до (2.0.1)", LocalBackup.SwitchLabel(new Version(2,0,2), new Version(2,0,1)), "older cached exe label");
+Assert("Вернуться к новой (2.0.2)", LocalBackup.SwitchLabel(new Version(2,0,1), new Version(2,0,2)), "newer cached exe label");
+Assert("Переключить на копию (2.0.2)", LocalBackup.SwitchLabel(new Version(2,0,2), new Version(2,0,2)), "same version cache label");
+var cacheDir = Path.Combine(Path.GetTempPath(), "TextSwap-cache-test-" + Guid.NewGuid().ToString("N"));
+Directory.CreateDirectory(cacheDir);
+try
+{
+    var running = Path.Combine(cacheDir, "TextSwap.exe");
+    File.WriteAllText(running, "2.0.2 test");
+    File.WriteAllText(LocalBackup.GetPath(running), "2.0.1 test");
+    LocalBackup.Delete(running);
+    Assert("True", File.Exists(running).ToString(), "deleting cache leaves current executable intact");
+    Assert("False", File.Exists(LocalBackup.GetPath(running)).ToString(), "delete only removes .previous");
+}
+finally { Directory.Delete(cacheDir, recursive: true); }
 Console.WriteLine($"PASSED: {passed} tests");

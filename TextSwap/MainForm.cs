@@ -3,6 +3,8 @@ using System.Drawing;
 using System.Runtime.InteropServices;
 using TextSwap.Core;
 using TextSwap.Windows;
+using TextSwap.UI;
+using TextSwap.Updates;
 
 namespace TextSwap;
 
@@ -12,8 +14,9 @@ public sealed class MainForm : Form
     private const int SelectionHotkeyId = 101;
 
     private readonly AppSettings _settings;
-    private readonly ComboBox _mode = new() { DropDownStyle = ComboBoxStyle.DropDownList, Width = 245 };
-    private readonly ComboBox _theme = new() { DropDownStyle = ComboBoxStyle.DropDownList, Width = 145 };
+    private readonly ThemePicker _mode = new(
+        ["Авто: преобладающий алфавит", "По фрагментам (эксперимент)", "EN → RU", "RU → EN"]) { Width = 240 };
+    private readonly ThemePicker _theme = new(["Как в Windows", "Светлая", "Тёмная"]) { Width = 145 };
     private bool _currentDark;
     private readonly TextBox _input = new() { Multiline = true, ScrollBars = ScrollBars.Both, WordWrap = true, Dock = DockStyle.Fill };
     private readonly TextBox _output = new() { Multiline = true, ScrollBars = ScrollBars.Both, WordWrap = true, Dock = DockStyle.Fill, ReadOnly = true };
@@ -28,7 +31,7 @@ public sealed class MainForm : Form
     public MainForm(AppSettings settings)
     {
         _settings = settings;
-        Text = "Text Swap 2.0 — смена раскладки";
+        Text = "Text Swap " + UpdateService.CurrentVersion.ToString(3) + " — смена раскладки";
         StartPosition = FormStartPosition.CenterScreen;
         MinimumSize = new Size(735, 540);
         Size = new Size(935, 690);
@@ -45,7 +48,7 @@ public sealed class MainForm : Form
         _tray = new NotifyIcon
         {
             Icon = Icon,
-            Text = "Text Swap 2.0",
+            Text = "Text Swap " + UpdateService.CurrentVersion.ToString(3),
             ContextMenuStrip = menu,
             Visible = true
         };
@@ -72,18 +75,18 @@ public sealed class MainForm : Form
         main.RowStyles.Add(new RowStyle(SizeType.Absolute, 27));
         Controls.Add(main);
 
-        var title = new Label
+        var header = new Panel { Dock = DockStyle.Fill, Tag = "header", Padding = new Padding(12, 0, 10, 0) };
+        header.Controls.Add(new Label
         {
-            Text = "Text Swap 2.0     RU ⇄ EN",
-            Font = new Font("Segoe UI Semibold", 15f, FontStyle.Bold),
+            Text = "Text Swap    ·    RU ⇄ EN",
+            Font = new Font("Segoe UI Semibold", 13.5f, FontStyle.Bold),
             Dock = DockStyle.Fill,
             TextAlign = ContentAlignment.MiddleLeft
-        };
-        main.Controls.Add(title, 0, 0);
+        });
+        main.Controls.Add(header, 0, 0);
 
         var toolbar = CreateFlow();
         toolbar.Controls.Add(new Label { Text = "Направление:", AutoSize = true, Margin = new Padding(0, 9, 9, 0) });
-        _mode.Items.AddRange(["Авто: преобладающий алфавит", "По фрагментам (эксперимент)", "EN → RU", "RU → EN"]);
         _mode.SelectedIndex = (int)_settings.Mode;
         _mode.SelectedIndexChanged += (_, _) =>
         {
@@ -93,7 +96,6 @@ public sealed class MainForm : Form
         };
         toolbar.Controls.Add(_mode);
         toolbar.Controls.Add(new Label { Text = "Тема:", AutoSize = true, Margin = new Padding(8, 9, 4, 0) });
-        _theme.Items.AddRange(["Как в Windows", "Светлая", "Тёмная"]);
         _theme.SelectedIndex = (int)_settings.Theme;
         _theme.SelectedIndexChanged += (_, _) =>
         {
@@ -118,29 +120,33 @@ public sealed class MainForm : Form
         actions.Controls.Add(MakeButton("строчные", (_, _) => _output.Text = _input.Text.ToLowerInvariant()));
         main.Controls.Add(actions, 0, 4);
 
-        var options = CreateFlow();
-        options.AutoScroll = true;
-        options.WrapContents = true;
-        options.Controls.Add(Option("Копировать результат", _settings.AutoCopyResult, value => _settings.AutoCopyResult = value));
-        options.Controls.Add(Option("Сворачивать в трей", _settings.MinimizeToTray, value => _settings.MinimizeToTray = value));
-        options.Controls.Add(Option("Закрывать в трей", _settings.CloseToTray, value => _settings.CloseToTray = value));
-        options.Controls.Add(Option("Запускать в трее", _settings.StartMinimized, value => _settings.StartMinimized = value));
-        options.Controls.Add(Option("Глобальные F9 / Ctrl+F9", _settings.EnableGlobalHotkeys, value =>
+        var options = new TableLayoutPanel { Dock = DockStyle.Fill, ColumnCount = 1, RowCount = 2 };
+        options.RowStyles.Add(new RowStyle(SizeType.Percent, 50));
+        options.RowStyles.Add(new RowStyle(SizeType.Percent, 50));
+        var row1 = CreateFlow(scroll: false);
+        row1.Controls.Add(Option("Копировать результат", _settings.AutoCopyResult, value => _settings.AutoCopyResult = value));
+        row1.Controls.Add(Option("Сворачивать в трей", _settings.MinimizeToTray, value => _settings.MinimizeToTray = value));
+        row1.Controls.Add(Option("Закрывать в трей", _settings.CloseToTray, value => _settings.CloseToTray = value));
+        var row2 = CreateFlow(scroll: false);
+        row2.Controls.Add(Option("Запускать в трее", _settings.StartMinimized, value => _settings.StartMinimized = value));
+        row2.Controls.Add(Option("Глобальные F9 / Ctrl+F9", _settings.EnableGlobalHotkeys, value =>
         {
             _settings.EnableGlobalHotkeys = value;
             if (IsHandleCreated) RefreshHotkeys();
         }));
+        options.Controls.Add(row1, 0, 0);
+        options.Controls.Add(row2, 0, 1);
         main.Controls.Add(options, 0, 5);
 
         _status.Text = "F9 — буфер → результат; Ctrl+F9 — преобразовать выделенное и вставить.";
-        _status.ForeColor = SystemColors.GrayText;
+        _status.Tag = "muted";
         main.Controls.Add(_status, 0, 6);
     }
 
-    private static FlowLayoutPanel CreateFlow() => new()
+    private static FlowLayoutPanel CreateFlow(bool scroll = false) => new()
     {
         Dock = DockStyle.Fill, FlowDirection = FlowDirection.LeftToRight,
-        WrapContents = false, AutoScroll = true,
+        WrapContents = false, AutoScroll = scroll,
         Margin = new Padding(0, 3, 0, 3)
     };
 
@@ -164,9 +170,23 @@ public sealed class MainForm : Form
 
     private static Control MakeTextGroup(string caption, TextBox box)
     {
-        var group = new GroupBox { Text = caption, Dock = DockStyle.Fill, Padding = new Padding(9, 10, 9, 9) };
-        group.Controls.Add(box);
-        return group;
+        var section = new TableLayoutPanel
+        {
+            Dock = DockStyle.Fill, Tag = "section", Padding = new Padding(12, 4, 12, 10),
+            ColumnCount = 1, RowCount = 2, Margin = new Padding(0, 3, 0, 3)
+        };
+        section.RowStyles.Add(new RowStyle(SizeType.Absolute, 25));
+        section.RowStyles.Add(new RowStyle(SizeType.Percent, 100));
+        section.Controls.Add(new Label
+        {
+            Text = caption, Dock = DockStyle.Fill,
+            Font = new Font("Segoe UI Semibold", 9.5f, FontStyle.Bold),
+            TextAlign = ContentAlignment.MiddleLeft
+        }, 0, 0);
+        box.BorderStyle = BorderStyle.None;
+        box.Margin = new Padding(0, 0, 0, 0);
+        section.Controls.Add(box, 0, 1);
+        return section;
     }
 
     private void SaveSettings()
@@ -304,7 +324,6 @@ public sealed class MainForm : Form
     {
         _currentDark = ThemeManager.IsDark(_settings.Theme);
         ThemeManager.Apply(this, _settings.Theme, _tray.ContextMenuStrip);
-        _status.ForeColor = _currentDark ? Color.FromArgb(179, 187, 202) : SystemColors.GrayText;
     }
 
     protected override void OnActivated(EventArgs e)
