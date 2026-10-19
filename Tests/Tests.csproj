@@ -11,5 +11,6 @@
     <Compile Include="../TextSwap/Core/LayoutConverter.cs" Link="LayoutConverter.cs" />
     <Compile Include="../TextSwap/Core/AppTheme.cs" Link="AppTheme.cs" />
     <Compile Include="../TextSwap/Core/BackupSwap.cs" Link="BackupSwap.cs" />
+    <Compile Include="../TextSwap/Core/LocalBackup.cs" Link="LocalBackup.cs" />
   </ItemGroup>
 </Project>
