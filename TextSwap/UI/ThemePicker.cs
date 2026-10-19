@@ -1,3 +1,4 @@
+using System.ComponentModel;
 using System.Drawing;
 
 namespace TextSwap.UI;
@@ -12,6 +13,7 @@ public sealed class ThemePicker : UserControl
 
     public event EventHandler? SelectedIndexChanged;
 
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
     public int SelectedIndex
     {
         get => _index;
